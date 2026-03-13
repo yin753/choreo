@@ -1,17 +1,22 @@
 FROM openlistteam/openlist:latest
 
-# 切换到 root 修改权限
+# 设置工作目录
+WORKDIR /opt/openlist
+
+# 切换到 root 创建目录并赋权
 USER root
 RUN mkdir -p /opt/openlist/data && chown -R 10014:10014 /opt/openlist/data
 
-# 切换回 Choreo 要求的非 root 用户
+# 切换回 Choreo 用户
 USER 10014
 
-# 声明端口
+# 声明 Choreo 分配的端口（确保 Choreo 控制台也配置为该端口）
 EXPOSE 56889
 
-# 使用环境变量 OPENLIST_PORT 来强制修改监听端口
+# 环境变量设置
 ENV OPENLIST_PORT=56889
+ENV OPENLIST_DATA=/opt/openlist/data
 
-# 启动命令：移除无效的 --address，保留 --data
-CMD ["./openlist", "server", "--data", "/opt/openlist/data"]
+# 启动命令：使用绝对路径，确保 binary 能够找到
+# 移除 --address，依靠环境变量或默认行为
+CMD ["/openlist", "server", "--data", "/opt/openlist/data"]
