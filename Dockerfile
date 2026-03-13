@@ -10,11 +10,7 @@ RUN mkdir -p /opt/openlist/data && chown -R 10014:10014 /opt/openlist/data
 # 切换回 Choreo 用户
 USER 10014
 
-# 声明 Choreo 分配的端口（确保 Choreo 控制台也配置为该端口）
-EXPOSE 56889
-
 # 环境变量设置
-ENV OPENLIST_PORT=56889
 ENV OPENLIST_DATA=/opt/openlist/data
 
 # 启动命令：使用绝对路径，确保 binary 能够找到
